@@ -1,0 +1,30 @@
+version: 2.0.{build}
+image: Visual Studio 2017
+platform: Any CPU
+configuration: Release
+clone_depth: 1
+pull_requests:
+  do_not_increment_build_number: true
+assembly_info:
+  patch: true
+  file: '**\AssemblyInfo.*'
+  assembly_version: '{version}'
+  assembly_file_version: '{version}'
+  assembly_informational_version: '{version}'
+dotnet_csproj:
+  patch: true
+  file: '**\*.csproj'
+  version: '{version}'
+  package_version: '{version}'
+  assembly_version: '{version}'
+  file_version: '{version}'
+  informational_version: '{version}'
+init:
+  - ps: git config --global core.autoclrf true
+build:
+  project: AppVeyor.Tests.sln
+  verbosity: minimal
+  publish_wap_xcopy: true
+  publish_aspnet_core: true
+  publish_azure_webjob: true
+test: off 

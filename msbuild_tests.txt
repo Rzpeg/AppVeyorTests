@@ -1,0 +1,17 @@
+-- define variable
+set APPVEYOR_BUILD_FOLDER=C:\temp\AppVeyorTests\
+
+-- build sln
+msbuild "AppVeyor.Tests.sln" /m /verbosity:minimal /p:Configuration="Release" /p:Platform="Any CPU"
+
+-- pack web
+msbuild "src\AppVeyor.Tests.Web\AppVeyor.Tests.Web.csproj" /m /verbosity:minimal /p:Configuration="Release" /p:Platform="AnyCPU" /p:DeployOnBuild=True /p:PublishProfile=appveyor_workaround
+
+-- pack webjob
+msbuild "src\AppVeyor.Tests.Worker\AppVeyor.Tests.Worker.csproj" /m /verbosity:minimal /p:Configuration="Release" /p:Platform="AnyCPU" /p:DeployOnBuild=True /p:PublishProfile=appveyor_workaround
+
+-- pack api with msbuild
+msbuild "src\AppVeyor.Tests.Api\AppVeyor.Tests.Api.csproj" /m /verbosity:minimal /p:Configuration="Release" /p:Platform="AnyCPU" /p:DeployOnBuild=True /p:PublishProfile=appveyor_workaround
+
+-- pack api with dotnet CLI -> not working because of https://github.com/dotnet/cli/issues/9220 (EF Core reference in Common library)
+dotnet publish "src\AppVeyor.Tests.Api\AppVeyor.Tests.Api.csproj" --output api_bin --verbosity minimal -c:"Release" /p:Platform="AnyCPU"
