@@ -22,7 +22,7 @@ dotnet_csproj:
 init:
   - ps: git config --global core.autoclrf true
 before_build:
-  - ps: nuget restore MixMoveMatch.Provisioning.sln
+  - ps: nuget restore AppVeyor.Tests.sln
 build:
   project: AppVeyor.Tests.sln
   verbosity: minimal
