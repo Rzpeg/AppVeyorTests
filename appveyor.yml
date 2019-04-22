@@ -21,6 +21,8 @@ dotnet_csproj:
   informational_version: '{version}'
 init:
   - ps: git config --global core.autoclrf true
+before_build:
+  - ps: nuget restore MixMoveMatch.Provisioning.sln
 build:
   project: AppVeyor.Tests.sln
   verbosity: minimal
